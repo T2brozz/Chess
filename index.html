@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" oncontextmenu="return false;"> <! -- blocks right click menu -->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="p5.js"></script>
+    <script src="game.js"></script>
+    <script src="classes.js"></script>
+    <script src="GameVariables.js"></script>
+    <script src="Menu.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div id="mainMenu">
+    <h1>Chess</h1>
+    <input type="button" id="playButton" class="mainBtn" value="Play" onclick="HideMainMenu('playMenu')">
+    <p></p>
+    <input type="button" id="howtoButton" class="mainBtn" value="How To Play Chess" onclick="HideMainMenu('howto')">
+    <p></p>
+    <input type="button" id="creditsButton" class="mainBtn" value="Credits" onclick="HideMainMenu('credits')">
+</div>
+<div id="playMenu" style="display: none">
+    <h1>Difficulty of Ai</h1>
+    <input type="button" id="lvl1" class="playBtn" value="Dump" onclick="StartGame(1)">
+    <p></p>
+    <input type="button" id="lvl2" class="playBtn" value="Normal" onclick="StartGame(2)">
+    <p></p>
+    <input type="button" id="lvl3" class="playBtn" value="Pro" onclick="StartGame(3)">
+    <p></p>
+    <input type="button" class="backBtn" value="Main Menu" onclick="ShowMainMenu('playMenu')">
+</div>
+<div id="howto" style="display: none">
+    <h1> How To Play Chess</h1>
+    <div id="howtoText"></div>
+    <p></p>
+    <input type="button" class="backBtn" value="Main Menu" onclick="ShowMainMenu('howto')">
+</div>
+<div id="credits" style="display: none">
+    <h1>Credits</h1>
+    <div id="creditsText"></div>
+    <p></p>
+    <input type="button" class="backBtn" value="Main Menu" onclick="ShowMainMenu('credits')">
+
+
+</div>
+</body>
+</html>
