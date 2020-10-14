@@ -9,18 +9,29 @@
 
 // second Char = color
 // first Char = figure label
-let initialGameBoard=[
-    ["rb", "hb", "bb", "kb", "qb", "bb", "hb", "rb"],
+let INITIALGAMBOARD=[
+    ["rb", "hb", "bb", "qb", "kb", "bb", "hb", "rb"],
     ["pb", "pb", "pb", "pb", "pb", "pb", "pb", "pb"],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     ["pw", "pw", "pw", "pw", "pw", "pw", "pw", "pw"],
-    ["rw", "hw", "bw", "kw", "qw", "bw", "hw", "rw"]
+    ["rw", "hw", "bw", "qw", "kw", "bw", "hw", "rw"]
 ];
-let ChessBoard = [];
-let SelectedPanel = {
+/*
+let INITIALGAMBOARD=[
+    ["rb", "hb", "bb", "qb", "kb", "bb", "hb", "rb"],
+    ["pb", "pb", "pb", "pb", "pb", "pb", "pb", "pb"],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, "rb", 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    ["rb", 0, 0, 0, "kw", 0, 0, "rb"]
+];*/
+let chessBoard = [];
+let selectedPanel = {
     state: false,
     piece_index: {
         x: 0,
@@ -29,7 +40,7 @@ let SelectedPanel = {
     after_select: 0 //cooldown
 };
 let FigurePictures;
-let FigureValues = {
+let FIGUREVALUES = {
     p: 10,
     h: 30,
     b: 30,
@@ -49,7 +60,9 @@ let currentPlayer = "w";// w for white and b for black
 let newGame=false;
 let isPlaying=false;
 let miniMaxDepth=1;
-
+let foundKings = {w: false, b: false};
+let isSpeedGame=false;
+let thinkTime=0;
 /*
 ___  ___                                       _       _     _
 |  \/  |                                      (_)     | |   | |
@@ -58,3 +71,15 @@ ___  ___                                       _       _     _
 | |  | |  __/ | | | |_| |      \ V / (_| | |  | | (_| | |_) | |  __/\__ \
 \_|  |_/\___|_| |_|\__,_|       \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
  */
+
+
+
+/*
+   _____   _             _            __      __                 _           _       _
+  / ____| | |           | |           \ \    / /                (_)         | |     | |
+ | (___   | |_    __ _  | |_   ___     \ \  / /    __ _   _ __   _    __ _  | |__   | |   ___   ___
+  \___ \  | __|  / _` | | __| / __|     \ \/ /    / _` | | '__| | |  / _` | | '_ \  | |  / _ \ / __|
+  ____) | | |_  | (_| | | |_  \__ \      \  /    | (_| | | |    | | | (_| | | |_) | | | |  __/ \__ \
+ |_____/   \__|  \__,_|  \__| |___/       \/      \__,_| |_|    |_|  \__,_| |_.__/  |_|  \___| |___/
+ */
+let startTime;

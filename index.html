@@ -5,43 +5,111 @@
     <title>Title</title>
     <script src="p5.js"></script>
     <script src="game.js"></script>
-    <script src="classes.js"></script>
     <script src="GameVariables.js"></script>
     <script src="Menu.js"></script>
+    <script src="SideFunctions.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div id="mainMenu">
+<div id="mainMenu" class="div" style="display: flex">
     <h1>Chess</h1>
-    <input type="button" id="playButton" class="mainBtn" value="Play" onclick="HideMainMenu('playMenu')">
+    <input type="button" id="playButton" class="mainBtn" value="        Play       " onclick="HideDiv('playMainMenu')">
     <p></p>
-    <input type="button" id="howtoButton" class="mainBtn" value="How To Play Chess" onclick="HideMainMenu('howto')">
+    <input type="button" id="howtoButton" class="mainBtn" value="How To Play Chess" onclick="HideDiv('howto')">
     <p></p>
-    <input type="button" id="creditsButton" class="mainBtn" value="Credits" onclick="HideMainMenu('credits')">
+    <input type="button" id="creditsButton" class="mainBtn" value="      Credits      "
+           onclick="HideDiv('credits')">
 </div>
-<div id="playMenu" style="display: none">
+<div id="playMainMenu" class="div" style="display: none">
+    <h1> Chess gamemodes</h1>
+    <input type="button" id="normalChess" class="mainBtn" value="normal chess"
+           onclick="HideDiv('playMenu','playMainMenu')">
+    <p></p>
+    <input type="button" id="speedChess" class="mainBtn" value="speed chess"
+           onclick="HideDiv('speedChessMenu','playMainMenu')">
+    <p></p>
+    <button class="backBtn" onclick="HideDiv('mainMenu','playMainMenu')"><span>MainMenu</span></button>
+</div>
+
+<div id="speedChessMenu" class="div" style="display:none;">
+    <h1>Time to Think</h1>
+    <input type="button" class="playBtn mainBtn" value="3 Minutes" onclick="startSpeedGame(3)">
+    <p></p>
+    <input type="button" class="playBtn mainBtn" value="2 Minutes" onclick="startSpeedGame(2)">
+    <p></p>
+    <input type="button" class="playBtn mainBtn" value="1 Minutes" onclick="startSpeedGame(1)">
+    <p></p>
+    <button class="backBtn" onclick="HideDiv('mainMenu','speedChessMenu')"><span>MainMenu</span></button>
+
+</div>
+<div id="playMenu" class="div" style="display: none">
     <h1>Difficulty of Ai</h1>
-    <input type="button" id="lvl1" class="playBtn" value="Dump" onclick="StartGame(1)">
+    <input type="button" id="lvl1" class="playBtn mainBtn" value="Dumb" onclick="startGame(1)">
     <p></p>
-    <input type="button" id="lvl2" class="playBtn" value="Normal" onclick="StartGame(2)">
+    <input type="button" id="lvl2" class="playBtn mainBtn" value="Normal" onclick="startGame(2)">
     <p></p>
-    <input type="button" id="lvl3" class="playBtn" value="Pro" onclick="StartGame(3)">
+    <input type="button" id="lvl3" class="playBtn mainBtn" value="Pro" onclick="startGame(3)">
     <p></p>
-    <input type="button" class="backBtn" value="Main Menu" onclick="ShowMainMenu('playMenu')">
+    <button class="backBtn" onclick="HideDiv('mainMenu','playMenu')"><span>MainMenu</span></button>
 </div>
-<div id="howto" style="display: none">
+<div id="howto" class="div" style="display: none">
     <h1> How To Play Chess</h1>
     <div id="howtoText"></div>
     <p></p>
-    <input type="button" class="backBtn" value="Main Menu" onclick="ShowMainMenu('howto')">
+    <button class="backBtn" onclick="HideDiv('mainMenu','howto')"><span>MainMenu</span></button>
 </div>
-<div id="credits" style="display: none">
+<div id="credits" class="div" style="display: none">
     <h1>Credits</h1>
     <div id="creditsText"></div>
     <p></p>
-    <input type="button" class="backBtn" value="Main Menu" onclick="ShowMainMenu('credits')">
+    <button class="backBtn" onclick="HideDiv('mainMenu','credits')"><span>MainMenu</span></button>
+</div>
 
+<div id="endScreen" class="div" style="display: none">
+    <h1 id="endTitle">black has WON</h1>
+    <div id="endText"></div>
+    <span><h2>Stats</h2></span>
+    <p></p>
+    <div id="stats">
+        <table>
+            <tr>
+                <tb>
+                    Time
+                </tb>
+                <tb id="statsTime">
+                </tb>
+            </tr>
+            <p></p>
+            <tr>
+                <tb>
+                    Black Figures Left
+                </tb>
+                <tb id="blackLeft">
+
+                </tb>
+            </tr>
+            <p></p>
+            <tr>
+                <tb>
+                    White Figures Left
+                </tb>
+                <tb id="whiteLeft">
+
+                </tb>
+            </tr>
+        </table>
+
+    </div>
+    <p></p>
+    <button class="backBtn" onclick="HideDiv('mainMenu','endScreen')"><span>MainMenu</span></button>
 
 </div>
+
+<div id="inGame" class="div inGame">
+    <div id="canv"></div>
+    <div id="inGameText">
+    </div>
+</div>
+
 </body>
 </html>
