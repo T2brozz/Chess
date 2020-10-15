@@ -12,20 +12,9 @@ function ShowMainMenu(divToHide) {
     oldDiv.style.display = "none";
 }
 
-function startGame(difficulty) {
-    thinkTime = 0;
-    isSpeedGame = false;
-    miniMaxDepth = difficulty;
-    newGame = true;
-    document.getElementById("playMenu").style.display = "none";
-}
 
-function startSpeedGame(time) {
-    thinkTime = time;
-    isSpeedGame = true;
-    newGame = true;
-    document.getElementById("speedChessMenu").style.display = "none";
-}
+
+
 
 function calcTime() {
     let timeNeeded = {unix: 0, h: 0, m: 0, s: 0};
@@ -59,8 +48,32 @@ function EndScreen(winner) {
     }
     document.getElementById("whiteLeft").innerHTML = String(whiteLeft);
     document.getElementById("blackLeft").innerHTML = String(blackleft);
+    backGroundMusic.pause();
 }
 
 function quit() {
     gameEnd("giveUp");
+}
+function startGame(difficulty) {
+    localMultiPlayer=false
+    thinkTime = 0;
+    isSpeedGame = false;
+    miniMaxDepth = difficulty;
+    newGame = true;
+    document.getElementById("playMenu").style.display = "none";
+}
+
+function playLocal(){
+    thinkTime = 0;
+    newGame = true;
+    localMultiPlayer=true;
+    document.getElementById("playMainMenu").style.display = "none";
+
+}
+function startSpeedGame(time) {
+    localMultiPlayer=false
+    thinkTime = time;
+    isSpeedGame = true;
+    newGame = true;
+    document.getElementById("speedChessMenu").style.display = "none";
 }

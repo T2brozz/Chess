@@ -1,4 +1,3 @@
-
 /*
   __  __   _           _     __  __                               _
  |  \/  | (_)         (_)   |  \/  |                      /\     | |
@@ -63,6 +62,7 @@ function maxi(board, color, depth) {
     return [bestMoves[Math.floor(Math.random() * bestMoves.length)], score]
 
 }
+
 // mini is white
 // is the same as maxi only some values are inverted
 function mini(currentGameBoard, color, depth) {

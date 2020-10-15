@@ -30,6 +30,9 @@
     <input type="button" id="speedChess" class="mainBtn" value="speed chess"
            onclick="HideDiv('speedChessMenu','playMainMenu')">
     <p></p>
+    <input type="button" id="local" class="mainBtn" value="Local Multiplayer"
+           onclick="playLocal()">
+    <p></p>
     <button class="backBtn" onclick="HideDiv('mainMenu','playMainMenu')"><span>MainMenu</span></button>
 </div>
 
@@ -62,7 +65,12 @@
 </div>
 <div id="credits" class="div" style="display: none">
     <h1>Credits</h1>
-    <div id="creditsText"></div>
+    <div id="creditsText">
+        Music: Jack <br>
+        Everything else: T2broZz
+        <p></p>
+        <img src="https://github.com/fluidicon.png" onclick="window.open('https://github.com/T2brozz')" height="20" width="20" style="float: right">
+    </div>
     <p></p>
     <button class="backBtn" onclick="HideDiv('mainMenu','credits')"><span>MainMenu</span></button>
 </div>
@@ -93,7 +101,7 @@
             <p></p>
             <tr>
                 <tb>
-                    White Figures Left
+                    white figures left
                 </tb>
                 <tb id="whiteLeft">
 
@@ -113,7 +121,9 @@
         <p></p>
         <button class="backBtn issue"
                 onclick="window.open('https://github.com/T2brozz/Chess/issues/new?assignees=&labels=&template=bug_report.md&title=');">
-            <span>Report issue</span></button>
+            <span>Report bug</span></button>
+        <p></p>
+        <button class="backBtn" onclick="isMuted=!isMuted"><span>mute</span></button>
         <p></p>
         <button class="backBtn" onclick="quit()"><span>quit</span></button>
     </div>

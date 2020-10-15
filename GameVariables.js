@@ -60,6 +60,8 @@ let miniMaxDepth=1;
 let wins = {w: false, b: false};
 let isSpeedGame=false;
 let thinkTime=0;
-
+let isMuted=false;
 
 let startTime;
+let localMultiPlayer=false
+

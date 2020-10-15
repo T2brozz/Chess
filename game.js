@@ -3,14 +3,17 @@ let canv; // the canvas
 get image from url
  */
 function preload() {
-    figurePictures = loadImage("https://i.imgur.com/rl1be8q.png"); // get Image from Source
-    backGroundMusic=loadSound("https://cdn.discordapp.com/attachments/710843290509115412/766284537671188500/Projekt_-_15.10.20_14.mp3")
+    figurePictures = loadImage("https://t2brozz.github.io/Chess/figures.png"); // get Image from Source
+    backGroundMusic = loadSound("https://t2brozz.github.io/Chess/backgroundMusic.mp3");
 }
 
 function setup() {
     canv = createCanvas(825, 830);
     canv.parent('canv'); // set parent div to canv
     canv.hide();
+    backGroundMusic.setVolume(0.0005);
+    backGroundMusic.loop();
+    backGroundMusic.pause();
 }
 
 function draw() {
@@ -38,13 +41,21 @@ function draw() {
             document.getElementById("timeLeft").style.display = "none";
 
         }
+        backGroundMusic.play();
+
     }
     /*
     the actual game
      */
     if (isPlaying) {
-        backGroundMusic.play()
+
         game();
+    }
+    if (isMuted) {
+
+        masterVolume(0)
+    } else {
+        masterVolume(1)
     }
 }
 
@@ -55,16 +66,30 @@ function game() {
     drawBackground();
     updateMouse();
     drawSides();
+    gameEnd(); // check if game ends
     if (currentPlayer === "w") { // white pisRecursion
         whiteMove();
-    } else if (currentPlayer === "b") { // black pisRecursion
-        gameEnd(); // check if game ends
-        ai("b");
-        currentPlayer = changeColor("b"); // change black to white
-        selectedPanel.after_select = 0;
-        gameEnd(); // check if game ends
+    }
+    if (!localMultiPlayer) {
+
+        if (currentPlayer === "b") { // black pisRecursion
+            gameEnd(); // check if game ends
+            ai("b");
+            currentPlayer = changeColor("b"); // change black to white
+            selectedPanel.after_select = 0;
+
+
+        }
+    }else {
+        if(currentPlayer==="b"){
+            whiteMove()
+        }
+        currentPlayer=changeColor(currentPlayer);
+
+
 
     }
+
     selectedPanel.after_select++;
     for (let i = 0; i < chessBoard.length; i++) { // draw figures
         for (let j = 0; j < chessBoard[i].length; j++) {
@@ -187,7 +212,6 @@ function speedGame() {
 }
 
 
-
 /*
 check if king of a given color is in Check
  */
@@ -233,7 +257,6 @@ function checkCheckMate(board, color) {
         }
     }
     return !Boolean(flatMoves.length)
-
 }
 
 /*
