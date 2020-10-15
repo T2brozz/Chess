@@ -51,7 +51,7 @@ function drawPiece(x, y, pieceId) {
     } else {
         dy = 0;
     }
-    image(FigurePictures, x * 100, y * 100, 100, 100, dx, dy, 100, 100);
+    image(figurePictures, x * 100, y * 100, 100, 100, dx, dy, 100, 100);
 
 }
 
@@ -64,7 +64,7 @@ function drawBackground() {
             if (j % 2 === 0) {
                 fill("#a4a4a4");// white square color
             } else {
-                fill("#363636"); //black squarecolor
+                fill("#363636"); //black square color
             }
             rect(j * 100, i * 100, 100, 100);
             if (j % 2 === 0) {
@@ -81,7 +81,7 @@ function drawBackground() {
 draws the letters and numbers on the side
  */
 function drawSides() {
-    fill("#454545");
+    fill("#a4a4a4");
     rect(800, 0, 25, 825);
     rect(0, 800, 825, 30);
     fill("black");
@@ -103,27 +103,50 @@ function changeColor(color) {
 }
 
 /*
+returns the associated value for a figure
+ */
+function getFigureValue(figure) {
+    let value = 0;
+    switch (figure[0]) {
+        case "p":
+            value = FIGUREVALUES.p;
+            break;
+        case "b":
+            value = FIGUREVALUES.b;
+            break;
+        case "h":
+            value = FIGUREVALUES.h;
+            break;
+        case "r":
+            value = FIGUREVALUES.r;
+            break;
+        case "q":
+            value = FIGUREVALUES.q;
+            break;
+        case "k":
+            value = FIGUREVALUES.k;
+            break;
+
+    }
+    return value;
+}
+
+/*
 is setting a Figure from oldPos to newPos in a given board
  */
 function setMove(oldPos, newPos, board) {
-    try { //TODO:dev stuff remove try catch
-        let copiedBoard = deepCopy(board);
-        let type = copiedBoard[oldPos.y][oldPos.x];
-        copiedBoard[oldPos.y][oldPos.x] = 0;
-        copiedBoard[newPos.y][newPos.x] = type;
-        return copiedBoard;
-    } catch (e) {
-        debugger
-        console.log(e)
-        console.log(oldPos, newPos)
-    }
+    let copiedBoard = deepCopy(board);
+    let type = copiedBoard[oldPos.y][oldPos.x];
+    copiedBoard[oldPos.y][oldPos.x] = 0;
+    copiedBoard[newPos.y][newPos.x] = type;
+    return copiedBoard;
+
 }
 
 /*
 copies a given multidimensional array to avoid a call by reference
  */
-const deepCopy = (arr) => { // need this to copy array without reference
-    //https://medium.com/@ziyoshams/deep-copying-javascript-arrays-4d5fc45a6e3e
+function deepCopy(arr) { // need this to copy array without reference by:https://medium.com/@ziyoshams/deep-copying-javascript-arrays-4d5fc45a6e3e
     let copy = [];
     arr.forEach(elem => {
         if (Array.isArray(elem)) {
@@ -136,10 +159,46 @@ const deepCopy = (arr) => { // need this to copy array without reference
 }
 
 /*
+returns moves and boards which are for a given color possible
+ */
+function getBoardsMoves(board, color, isRecursion = 0) {
+
+    let allmoves = getAllMoves(board, color, isRecursion);
+    let flatAllMoves = []
+    let boards = [];
+    //generate a board where a move was set
+    for (let i = 0; i < allmoves.length; i++) {
+        for (let j = 0; j < allmoves[i].length; j++) {
+            flatAllMoves.push(allmoves[i][j])
+            boards.push(setMove(allmoves[i][j].OldPos, {
+                x: allmoves[i][j].x,
+                y: allmoves[i][j].y
+            }, board));
+        }
+    }
+    return [boards, flatAllMoves]
+}
+
+/*
+returns a 2 dimensional array of all moves from a given color in a given chess board
+ */
+function getAllMoves(board, color, isRecursion) {
+    let allmoves = []
+    //get all moves
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            if (board[i][j][1] === color) {
+                allmoves.push(getPossibleMoves(j, i, board, isRecursion));
+            }
+        }
+    }
+    return allmoves;
+}
+
+/*
 returns an array with all possible moves for one figure
  */
 function getPossibleMoves(x, y, board, layer) {
-    baa++; //TODO: devstuff
     let posX = x;
     let posY = y;
     let type, color;
@@ -154,31 +213,31 @@ function getPossibleMoves(x, y, board, layer) {
         // moves for black pawn
         if (color === "b" && posY + 1 < 8) {
             if (board[posY + 1][posX + 1] !== 0) {
-                moves.push({x: posX + 1, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + 1, y: posY + 1, OldPos: {x: posX, y: posY}});
             }
             if (board[posY + 1][posX - 1] !== 0) {
-                moves.push({x: posX - 1, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX - 1, y: posY + 1, OldPos: {x: posX, y: posY}});
             }
             if (board[posY + 1][posX] === 0) {
-                moves.push({x: posX, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX, y: posY + 1, OldPos: {x: posX, y: posY}});
                 if (posY === 1 && board[posY + 2][posX] === 0) {
-                    moves.push({x: posX, y: posY + 2, value: 0, OldPos: {x: posX, y: posY}});
+                    moves.push({x: posX, y: posY + 2, OldPos: {x: posX, y: posY}});
                 }
             }
         }
         //moves for white figure
         else if (color === "w" && posY - 1 >= 0) {
             if (board[posY - 1][posX + 1] !== 0) {
-                moves.push({x: posX + 1, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + 1, y: posY - 1, OldPos: {x: posX, y: posY}});
             }
             if (board[posY - 1][posX - 1] !== 0) {
-                moves.push({x: posX - 1, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX - 1, y: posY - 1, OldPos: {x: posX, y: posY}});
             }
 
             if (board[posY - 1][posX] === 0) {
-                moves.push({x: posX, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX, y: posY - 1, OldPos: {x: posX, y: posY}});
                 if (posY === 6 && board[posY - 2][posX] === 0) {
-                    moves.push({x: posX, y: posY - 2, value: 0, OldPos: {x: posX, y: posY}});
+                    moves.push({x: posX, y: posY - 2, OldPos: {x: posX, y: posY}});
                 }
             }
         }
@@ -191,14 +250,14 @@ function getPossibleMoves(x, y, board, layer) {
     function King() {
         let moves = [];
         moves.push(
-            {x: posX - 1, y: posY, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX + 1, y: posY, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX - 1, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX + 1, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX - 1, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX + 1, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}}
+            {x: posX - 1, y: posY, OldPos: {x: posX, y: posY}},
+            {x: posX + 1, y: posY, OldPos: {x: posX, y: posY}},
+            {x: posX, y: posY + 1, OldPos: {x: posX, y: posY}},
+            {x: posX - 1, y: posY + 1, OldPos: {x: posX, y: posY}},
+            {x: posX + 1, y: posY + 1, OldPos: {x: posX, y: posY}},
+            {x: posX, y: posY - 1, OldPos: {x: posX, y: posY}},
+            {x: posX - 1, y: posY - 1, OldPos: {x: posX, y: posY}},
+            {x: posX + 1, y: posY - 1, OldPos: {x: posX, y: posY}}
         );
         return moves;
     }
@@ -211,33 +270,33 @@ function getPossibleMoves(x, y, board, layer) {
         // each for loop represents 1 of the 4 diagonal directions
         for (let i = posY + 1; i <= 7; i++) {
             if (board[i][posX + (posY - i)] === 0) {
-                moves.push({x: posX + (posY - i), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (posY - i), y: i, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: posX + (posY - i), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (posY - i), y: i, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
         for (let i = posY + 1; i <= 7; i++) {
             if (board[i][posX + (i - posY)] === 0) {
-                moves.push({x: posX + (i - posY), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (i - posY), y: i, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: posX + (i - posY), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (i - posY), y: i, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
         for (let i = posY - 1; i >= 0; i--) {
             if (board[i][posX + (posY - i)] === 0) {
-                moves.push({x: posX + (posY - i), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (posY - i), y: i, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: posX + (posY - i), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (posY - i), y: i, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
         for (let i = posY - 1; i >= 0; i--) {
             if (board[i][posX + (i - posY)] === 0) {
-                moves.push({x: posX + (i - posY), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (i - posY), y: i, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: posX + (i - posY), y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX + (i - posY), y: i, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
@@ -250,14 +309,14 @@ function getPossibleMoves(x, y, board, layer) {
     function Horse() {
         let moves = [];
         moves.push(
-            {x: posX + 1, y: posY - 2, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX + 1, y: posY + 2, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX - 1, y: posY - 2, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX - 1, y: posY + 2, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX + 2, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX - 2, y: posY - 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX + 2, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}},
-            {x: posX - 2, y: posY + 1, value: 0, OldPos: {x: posX, y: posY}}
+            {x: posX + 1, y: posY - 2, OldPos: {x: posX, y: posY}},
+            {x: posX + 1, y: posY + 2, OldPos: {x: posX, y: posY}},
+            {x: posX - 1, y: posY - 2, OldPos: {x: posX, y: posY}},
+            {x: posX - 1, y: posY + 2, OldPos: {x: posX, y: posY}},
+            {x: posX + 2, y: posY - 1, OldPos: {x: posX, y: posY}},
+            {x: posX - 2, y: posY - 1, OldPos: {x: posX, y: posY}},
+            {x: posX + 2, y: posY + 1, OldPos: {x: posX, y: posY}},
+            {x: posX - 2, y: posY + 1, OldPos: {x: posX, y: posY}}
         );
         return moves;
     }
@@ -272,33 +331,33 @@ function getPossibleMoves(x, y, board, layer) {
          */
         for (let i = posX - 1; i >= 0; i--) {
             if (board[posY][i] === 0) {
-                moves.push({x: i, y: posY, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: i, y: posY, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: i, y: posY, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: i, y: posY, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
         for (let i = posX + 1; i <= 7; i++) {
             if (board[posY][i] === 0) {
-                moves.push({x: i, y: posY, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: i, y: posY, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: i, y: posY, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: i, y: posY, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
         for (let i = posY - 1; i >= 0; i--) {
             if (board[i][posX] === 0) {
-                moves.push({x: posX, y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX, y: i, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: posX, y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX, y: i, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
         for (let i = posY + 1; i <= 7; i++) {
             if (board[i][posX] === 0) {
-                moves.push({x: posX, y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX, y: i, OldPos: {x: posX, y: posY}});
             } else {
-                moves.push({x: posX, y: i, value: 0, OldPos: {x: posX, y: posY}});
+                moves.push({x: posX, y: i, OldPos: {x: posX, y: posY}});
                 break;
             }
         }
@@ -355,7 +414,7 @@ function getPossibleMoves(x, y, board, layer) {
     layer variable is for recursions
      */
     if (layer === 0) {
-        let movesToCheck = checkCheck(board, color, layer);
+        let movesToCheck = checkCheck(board, color);
         if (movesToCheck.length !== 0) {
             allowedMoves = preventCheck(board, color, movesToCheck, allowedMoves);
         }

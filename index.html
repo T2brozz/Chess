@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="p5.js"></script>
+    <script src="p5.sound.min.js"></script>
     <script src="game.js"></script>
     <script src="GameVariables.js"></script>
     <script src="Menu.js"></script>
     <script src="SideFunctions.js"></script>
+    <script src="miniMaxFuntions.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -102,13 +104,20 @@
     </div>
     <p></p>
     <button class="backBtn" onclick="HideDiv('mainMenu','endScreen')"><span>MainMenu</span></button>
-
 </div>
 
-<div id="inGame" class="div inGame">
+<div id="inGame" class="div inGame" style="display: none">
     <div id="canv"></div>
     <div id="inGameText">
+        <span id="timeLeft"> </span>
+        <p></p>
+        <button class="backBtn issue"
+                onclick="window.open('https://github.com/T2brozz/Chess/issues/new?assignees=&labels=&template=bug_report.md&title=');">
+            <span>Report issue</span></button>
+        <p></p>
+        <button class="backBtn" onclick="quit()"><span>quit</span></button>
     </div>
+
 </div>
 
 </body>
