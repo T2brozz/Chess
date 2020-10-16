@@ -32,7 +32,7 @@ let selectedPanel = {
 };
 //picture of figures
 let figurePictures;
-let backGroundMusic;
+let placeSound;
 //values for each type of Figure
 const FIGUREVALUES = {
     p: 10,
@@ -60,6 +60,7 @@ let miniMaxDepth=1;
 let wins = {w: false, b: false};
 let isSpeedGame=false;
 let thinkTime=0;
+let timeStop=false;
 let isMuted=false;
 
 let startTime;

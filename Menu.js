@@ -2,19 +2,9 @@ function HideDiv(divToShow, divToHide = "mainMenu") {
     let mainMenu = document.getElementById(divToHide);
     let newDiv = document.getElementById(divToShow);
     mainMenu.style.display = "none";
-    newDiv.style.display = "flex";
+    newDiv.style.display = "inline-block";
+    console.log(divToShow)
 }
-
-function ShowMainMenu(divToHide) {
-    let mainMenu = document.getElementById("mainMenu");
-    let oldDiv = document.getElementById(divToHide);
-    mainMenu.style.display = "flex";
-    oldDiv.style.display = "none";
-}
-
-
-
-
 
 function calcTime() {
     let timeNeeded = {unix: 0, h: 0, m: 0, s: 0};
@@ -26,12 +16,16 @@ function calcTime() {
 }
 
 function calcSpeedTime() {
-    let time = new Date((startTime + thinkTime * 60) - new Date().getTime());
-    return {m: time.getMinutes() - (60 - thinkTime), s: time.getSeconds()}
+
+        let time = new Date((startTime + thinkTime * 60) - new Date().getTime());
+        return {m: time.getMinutes() - (60 - thinkTime), s: time.getSeconds()}
+
 }
 
-function EndScreen(winner) {
+function showEndScreen(winner) {
     let time = calcTime();
+    document.getElementsByTagName("html")[0].style = 'background-image: url("background.png");'
+
     HideDiv('endScreen', 'inGame')
     document.getElementById('endTitle').innerHTML = winner + " WON "
     document.getElementById("statsTime").innerHTML = time.h + ":" + time.m + ":" + time.s;
@@ -48,32 +42,36 @@ function EndScreen(winner) {
     }
     document.getElementById("whiteLeft").innerHTML = String(whiteLeft);
     document.getElementById("blackLeft").innerHTML = String(blackleft);
-    backGroundMusic.pause();
 }
 
 function quit() {
     gameEnd("giveUp");
 }
+
 function startGame(difficulty) {
-    localMultiPlayer=false
+    localMultiPlayer = false
     thinkTime = 0;
     isSpeedGame = false;
     miniMaxDepth = difficulty;
     newGame = true;
     document.getElementById("playMenu").style.display = "none";
+
 }
 
-function playLocal(){
+function playLocal() {
     thinkTime = 0;
     newGame = true;
-    localMultiPlayer=true;
+    localMultiPlayer = true;
     document.getElementById("playMainMenu").style.display = "none";
 
 }
+
 function startSpeedGame(time) {
-    localMultiPlayer=false
+    localMultiPlayer = false
     thinkTime = time;
     isSpeedGame = true;
     newGame = true;
+    miniMaxDepth = 2;
+
     document.getElementById("speedChessMenu").style.display = "none";
 }

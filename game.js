@@ -4,16 +4,13 @@ get image from url
  */
 function preload() {
     figurePictures = loadImage("https://t2brozz.github.io/Chess/figures.png"); // get Image from Source
-    backGroundMusic = loadSound("https://t2brozz.github.io/Chess/backgroundMusic.mp3");
+    placeSound = loadSound("https://t2brozz.github.io/Chess/place.mp3");
 }
 
 function setup() {
     canv = createCanvas(825, 830);
     canv.parent('canv'); // set parent div to canv
     canv.hide();
-    backGroundMusic.setVolume(0.0005);
-    backGroundMusic.loop();
-    backGroundMusic.pause();
 }
 
 function draw() {
@@ -33,7 +30,14 @@ function draw() {
         isPlaying = true;
         startTime = new Date().getTime();
         canv.show()
-        document.getElementById("inGame").style.display = "block";
+        /*
+        some html stuff
+         */
+        document.getElementById("inGame").style.display = "inline-grid";
+        let htmlDisplyStyle = "display: inline-grid"
+        let htmlGridSize = "grid-template-columns: " + String(windowWidth / 2 - 410) + "px 820px 50px 150px auto"
+        document.getElementById("inGame").style = htmlDisplyStyle + ";" + htmlGridSize;
+        document.getElementsByTagName("html")[0].style.backgroundImage = "None"
         if (isSpeedGame) {
             document.getElementById("timeLeft").style.display = "block";
 
@@ -41,7 +45,6 @@ function draw() {
             document.getElementById("timeLeft").style.display = "none";
 
         }
-        backGroundMusic.play();
 
     }
     /*
@@ -52,10 +55,12 @@ function draw() {
         game();
     }
     if (isMuted) {
-
-        masterVolume(0)
+        document.getElementById("soundStatus").innerText = "Sound on";
+        masterVolume(0);
     } else {
-        masterVolume(1)
+
+        document.getElementById("soundStatus").innerText = "Sound off";
+        masterVolume(1);
     }
 }
 
@@ -80,12 +85,10 @@ function game() {
 
 
         }
-    }else {
-        if(currentPlayer==="b"){
+    } else {
+        if (currentPlayer === "b") {
             whiteMove()
         }
-        currentPlayer=changeColor(currentPlayer);
-
 
 
     }
@@ -130,7 +133,8 @@ function whiteMove() {
             selectedPanel.state = false;
             selectedPanel.after_select = 0;
 
-            currentPlayer = changeColor(currentPlayer)
+            currentPlayer = changeColor(currentPlayer);
+            placeSound.play()
             // change same colored selected figure
         } else if ((chessBoard[mouse.PanelY][mouse.PanelX][1] === currentPlayer)) {
             selectedPanel.state = true;
@@ -155,14 +159,18 @@ function whiteMove() {
 
 // aiMoves
 function ai(thisTurnColor) {
+    timeStop = true;
     setTimeout(() => {
         //get move
-        let ai_move = maxi(chessBoard, thisTurnColor, 2)[0];
+        let ai_move = maxi(chessBoard, thisTurnColor, miniMaxDepth)[0];
         // setmove
         chessBoard = setMove(ai_move.OldPos, {x: ai_move.x, y: ai_move.y}, chessBoard)
-        console.log(ai_move); //TODO: devstuff remove
+        placeSound.play()
 
-    }, 30)
+        console.log(ai_move); //TODO: devstuff remove
+        timeStop = false
+
+    }, 1000)
 
     console.log("nd") //TODO: devstuff remove
 }
@@ -173,13 +181,13 @@ function gameEnd(reason = "check") {
         console.log("Winner is black");
         isPlaying = false;
         canv.hide();
-        EndScreen("black");
+        showEndScreen("Black");
     } else if (wins.w && !wins.b) {
         console.log("Winner is white");
         isPlaying = false;
         canv.hide();
 
-        EndScreen("white");
+        showEndScreen("White");
     } else {
         // check if players are in chckmate
         wins = {w: !checkCheckMate(chessBoard, "w"), b: !checkCheckMate(chessBoard, "b")};
@@ -189,26 +197,28 @@ function gameEnd(reason = "check") {
         console.log("Winner is black, cause white is out of time ");
         isPlaying = false;
         canv.hide();
-        EndScreen("black");
+        showEndScreen("Black");
         //check if playxer is giving up
     } else if (reason === "giveUp") {
         console.log("Winner is black, cause white quit ");
         isPlaying = false;
         canv.hide();
-        EndScreen("black");
+        showEndScreen("Black");
     }
 
 }
 
 // show timer when in Speedgame mode
 function speedGame() {
-    let timeLeft = calcSpeedTime();
-    //check if no time
-    if (timeLeft.m === -1) {
-        gameEnd("time")
+    if (!timeStop) {
+        let timeLeft = calcSpeedTime();
+        //check if no time
+        if (timeLeft.m === -1) {
+            gameEnd("time")
+        }
+        //show time
+        document.getElementById("timeLeft").innerHTML = "Time Left:  " + timeLeft.m + " : " + timeLeft.s;
     }
-    //show time
-    document.getElementById("timeLeft").innerHTML = "Time Left:  " + timeLeft.m + " : " + timeLeft.s;
 }
 
 

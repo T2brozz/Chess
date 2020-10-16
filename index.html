@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div id="mainMenu" class="div" style="display: flex">
+<div id="mainMenu" class="div" style="display: inline-block">
     <h1>Chess</h1>
     <input type="button" id="playButton" class="mainBtn" value="        Play       " onclick="HideDiv('playMainMenu')">
     <p></p>
@@ -21,6 +21,14 @@
     <p></p>
     <input type="button" id="creditsButton" class="mainBtn" value="      Credits      "
            onclick="HideDiv('credits')">
+    <p></p>
+    <div style="display: inline-block; align-content: center">
+        <button class="backBtn issue"
+                onclick="window.open('https://github.com/T2brozz/Chess/issues/new?assignees=&labels=&template=bug_report.md&title=');">
+            <span>Report issue</span></button>
+        <button class="backBtn mute" onclick="isMuted=!isMuted"><span id="soundStatus">Sound off</span></button>
+        <p></p>
+    </div>
 </div>
 <div id="playMainMenu" class="div" style="display: none">
     <h1> Chess gamemodes</h1>
@@ -49,12 +57,11 @@
 </div>
 <div id="playMenu" class="div" style="display: none">
     <h1>Difficulty of Ai</h1>
-    <input type="button" id="lvl1" class="playBtn mainBtn" value="Dumb" onclick="startGame(1)">
+    <input type="button" id="lvl1" class="playBtn mainBtn" value="Easy" onclick="startGame(1)">
     <p></p>
     <input type="button" id="lvl2" class="playBtn mainBtn" value="Normal" onclick="startGame(2)">
     <p></p>
-    <input type="button" id="lvl3" class="playBtn mainBtn" value="Pro" onclick="startGame(3)">
-    <p></p>
+
     <button class="backBtn" onclick="HideDiv('mainMenu','playMenu')"><span>MainMenu</span></button>
 </div>
 <div id="howto" class="div" style="display: none">
@@ -69,7 +76,8 @@
         Music: Jack <br>
         Everything else: T2broZz
         <p></p>
-        <img src="https://github.com/fluidicon.png" onclick="window.open('https://github.com/T2brozz')" height="20" width="20" style="float: right">
+        <img src="https://github.com/fluidicon.png" onclick="window.open('https://github.com/T2brozz')" height="20"
+             width="20" style="float: right">
     </div>
     <p></p>
     <button class="backBtn" onclick="HideDiv('mainMenu','credits')"><span>MainMenu</span></button>
@@ -114,17 +122,12 @@
     <button class="backBtn" onclick="HideDiv('mainMenu','endScreen')"><span>MainMenu</span></button>
 </div>
 
-<div id="inGame" class="div inGame" style="display: none">
+<div id="inGame" class=" inGame" style="display: none">
     <div id="canv"></div>
     <div id="inGameText">
         <span id="timeLeft"> </span>
         <p></p>
-        <button class="backBtn issue"
-                onclick="window.open('https://github.com/T2brozz/Chess/issues/new?assignees=&labels=&template=bug_report.md&title=');">
-            <span>Report bug</span></button>
-        <p></p>
-        <button class="backBtn" onclick="isMuted=!isMuted"><span>mute</span></button>
-        <p></p>
+
         <button class="backBtn" onclick="quit()"><span>quit</span></button>
     </div>
 
