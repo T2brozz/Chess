@@ -163,16 +163,14 @@ function ai(thisTurnColor) {
     setTimeout(() => {
         //get move
         let ai_move = maxi(chessBoard, thisTurnColor, miniMaxDepth)[0];
-        // setmove
+        // setmovee
         chessBoard = setMove(ai_move.OldPos, {x: ai_move.x, y: ai_move.y}, chessBoard)
         placeSound.play()
 
-        console.log(ai_move); //TODO: devstuff remove
-        timeStop = false
+        timeStop = false; //starts time
 
     }, 1000)
 
-    console.log("nd") //TODO: devstuff remove
 }
 
 // check if game ends
@@ -285,5 +283,3 @@ function preventCheck(board, color, enemyMoves, moves) {
     }
     return preventCheckMoves;
 }
-
-

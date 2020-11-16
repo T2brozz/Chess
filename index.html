@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="mainMenu" class="div" style="display: inline-block">
-    <h1>Chess</h1>
+    <h1 class="front-headerline">Chess</h1>
     <input type="button" id="playButton" class="mainBtn" value="        Play       " onclick="HideDiv('playMainMenu')">
     <p></p>
     <input type="button" id="howtoButton" class="mainBtn" value="How To Play Chess" onclick="HideDiv('howto')">
@@ -24,14 +24,14 @@
     <p></p>
     <div style="display: inline-block; align-content: center">
         <button class="backBtn issue"
-                onclick="window.open('https://github.com/T2brozz/Chess/issues/new?assignees=&labels=&template=bug_report.md&title=');">
+                onclick="window.open('https://github.com/T2brozz/Chess/issues');">
             <span>Report issue</span></button>
         <button class="backBtn mute" onclick="isMuted=!isMuted"><span id="soundStatus">Sound off</span></button>
         <p></p>
     </div>
 </div>
 <div id="playMainMenu" class="div" style="display: none">
-    <h1> Chess gamemodes</h1>
+    <h1 class="headerline"> Chess gamemodes</h1>
     <input type="button" id="normalChess" class="mainBtn" value="normal chess"
            onclick="HideDiv('playMenu','playMainMenu')">
     <p></p>
@@ -45,7 +45,7 @@
 </div>
 
 <div id="speedChessMenu" class="div" style="display:none;">
-    <h1>Time to Think</h1>
+    <h1 class="headerline">Time to Think</h1>
     <input type="button" class="playBtn mainBtn" value="3 Minutes" onclick="startSpeedGame(3)">
     <p></p>
     <input type="button" class="playBtn mainBtn" value="2 Minutes" onclick="startSpeedGame(2)">
@@ -56,7 +56,7 @@
 
 </div>
 <div id="playMenu" class="div" style="display: none">
-    <h1>Difficulty of Ai</h1>
+    <h1 class="headerline">Difficulty of Ai</h1>
     <input type="button" id="lvl1" class="playBtn mainBtn" value="Easy" onclick="startGame(1)">
     <p></p>
     <input type="button" id="lvl2" class="playBtn mainBtn" value="Normal" onclick="startGame(2)">
@@ -65,19 +65,30 @@
     <button class="backBtn" onclick="HideDiv('mainMenu','playMenu')"><span>MainMenu</span></button>
 </div>
 <div id="howto" class="div" style="display: none">
-    <h1> How To Play Chess</h1>
-    <div id="howtoText"></div>
+    <h1 class="headerline"> How To Play Chess</h1>
+    <div id="howtoText" style="color: white">
+        <p>How to Play this Chess:</p>
+        <p>Leftclick on one of your figures to select it. <br> Another leftclick on a yellow square to move or on one
+            other piece that you own, to select the figure.</p>
+        <p>Move which this game is not capeable yet: Rochade, En passant and switch Pawn to queen. See Github issue list
+            for a full discription</p>
+        <p>How to Play Chess in general:</p>
+        <iframe width="500" height="300" src="https://www.youtube.com/embed/NAIQyoPcjNM" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
     <p></p>
     <button class="backBtn" onclick="HideDiv('mainMenu','howto')"><span>MainMenu</span></button>
 </div>
 <div id="credits" class="div" style="display: none">
-    <h1>Credits</h1>
-    <div id="creditsText">
-        Music: Jack <br>
-        Everything else: T2broZz
+    <h1 class="headerline">Credits</h1>
+    <div id="creditsText" style="color: white">
+        <br>
+        Everything: T2broZz
         <p></p>
-        <img src="https://github.com/fluidicon.png" onclick="window.open('https://github.com/T2brozz')" height="20"
-             width="20" style="float: right">
+        Github: <img src="https://github.com/fluidicon.png" onclick="window.open('https://github.com/T2brozz')"
+                     height="20"
+                     width="20" style="float: middel">
     </div>
     <p></p>
     <button class="backBtn" onclick="HideDiv('mainMenu','credits')"><span>MainMenu</span></button>

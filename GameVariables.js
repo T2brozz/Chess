@@ -9,7 +9,7 @@
 
 // second Char = color
 // first Char = figure label
-const INITIALGAMBOARD=[
+const INITIALGAMBOARD = [
     ["rb", "hb", "bb", "qb", "kb", "bb", "hb", "rb"],
     ["pb", "pb", "pb", "pb", "pb", "pb", "pb", "pb"],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -54,15 +54,15 @@ let allowableMoves;
 let currentPlayer = "w";// w for white and b for black
 
 //stuff for beginning
-let newGame=false;
-let isPlaying=false;
-let miniMaxDepth=1;
-let wins = {w: false, b: false};
-let isSpeedGame=false;
-let thinkTime=0;
-let timeStop=false;
-let isMuted=false;
+let newGame = false;
+let isPlaying = false;
+let miniMaxDepth = 1;
+let wins = {w: false, b: false}; // variable who is checkmate
+let isSpeedGame = false; // bool for speed games
+let thinkTime = 0; // time for speedgames
+let timeStop = false; // time stoped bool
+let isMuted = false; // bool for muted sound
 
-let startTime;
-let localMultiPlayer=false
+let startTime; // stores time when games starts
+let localMultiPlayer = false // check if local multiplayer
 

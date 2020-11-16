@@ -87,7 +87,7 @@ function drawSides() {
     fill("black");
     for (let i = 0; i < 9; i++) {
         textSize(32);
-        text(String(i), 804, i * 100 - 35);
+        text(String(9 - i), 804, i * 100 - 35); // number 9 - 1 on the right
         text(String.fromCharCode(65 + i), i * 100 + 42, 826); // 65 = A ; 65+1 = B ...
     }
 }

@@ -3,9 +3,11 @@ html {
     background-image: url("background.png");
     background-color: #3b4555;
 }
-body{
+
+body {
     text-align: center
 }
+
 .div {
     justify-content: center;
     align-content: center;
@@ -152,12 +154,23 @@ h1 {
 .issue {
     width: 200px;
 }
-.mute{
+
+.mute {
     width: 200px;
 }
-#inGameText{
+
+#inGameText {
     grid-column: 4;
 }
-#endScreen{
+
+#endScreen {
     align-items: center;
+}
+
+.headerline {
+    color: #11cba1;
+}
+
+.front-headerline {
+    color: #FFFFFF;
 }
