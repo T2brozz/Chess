@@ -176,12 +176,10 @@ function ai(thisTurnColor) {
 // check if game ends
 function gameEnd(reason = "check") {
     if (wins.b && !wins.w) {
-        console.log("Winner is black");
         isPlaying = false;
         canv.hide();
         showEndScreen("Black");
     } else if (wins.w && !wins.b) {
-        console.log("Winner is white");
         isPlaying = false;
         canv.hide();
 
@@ -192,13 +190,11 @@ function gameEnd(reason = "check") {
     }
     // check if time runs out
     if (reason === "time") {
-        console.log("Winner is black, cause white is out of time ");
         isPlaying = false;
         canv.hide();
         showEndScreen("Black");
         //check if playxer is giving up
     } else if (reason === "giveUp") {
-        console.log("Winner is black, cause white quit ");
         isPlaying = false;
         canv.hide();
         showEndScreen("Black");
