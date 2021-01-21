@@ -259,6 +259,8 @@ function getPossibleMoves(x, y, board, layer) {
             {x: posX - 1, y: posY - 1, OldPos: {x: posX, y: posY}},
             {x: posX + 1, y: posY - 1, OldPos: {x: posX, y: posY}}
         );
+
+
         return moves;
     }
 
@@ -418,6 +420,25 @@ function getPossibleMoves(x, y, board, layer) {
         if (movesToCheck.length !== 0) {
             allowedMoves = preventCheck(board, color, movesToCheck, allowedMoves);
         }
+
+        /*
+checks if move is going to set the  king in check
+*/
+        if(type === "k") {
+            for (let i = 0; i < allowedMoves.length; i++) {
+                let newpos = {x: allowedMoves[i].x, y: allowedMoves[i].y}
+                let boardToTest = setMove(allowedMoves[i].OldPos, newpos, board)
+                if (checkCheck(boardToTest, color).length !== 0) {
+                    allowedMoves.splice(i, 1);
+                    i--;
+
+                }
+            }
+
+        }
     }
+
+
+
     return allowedMoves;
 }

@@ -164,6 +164,7 @@ function ai(thisTurnColor) {
         //get move
         let ai_move = maxi(chessBoard, thisTurnColor, miniMaxDepth)[0];
         // setmovee
+        console.log(ai_move)
         chessBoard = setMove(ai_move.OldPos, {x: ai_move.x, y: ai_move.y}, chessBoard)
         placeSound.play()
 
