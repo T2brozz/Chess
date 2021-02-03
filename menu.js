@@ -48,10 +48,14 @@ function showEndScreen(winner) {
     //displays left pieces
     document.getElementById("whiteLeft").innerHTML = String(whiteLeft);
     document.getElementById("blackLeft").innerHTML = String(blackleft);
+
+    newSrc=canv.elt.toDataURL("image/png")
+    document.getElementById("endScreenCanvas").src=newSrc
 }
 
 //end game when quit is pressed
 function quit() {
+
     gameEnd("giveUp");
 }
 

@@ -14,7 +14,8 @@ body {
     align-items: center;
     align-self: center;
     background-color: #3b4555b3;
-    width: 600px;
+    width: 700px;
+
 }
 
 #mainMenu {
@@ -173,4 +174,15 @@ h1 {
 
 .front-headerline {
     color: #FFFFFF;
+}
+.overlay {
+    width: 100vh;
+    height: 85vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
 }

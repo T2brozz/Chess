@@ -437,8 +437,5 @@ checks if move is going to set the  king in check
 
         }
     }
-
-
-
     return allowedMoves;
 }
