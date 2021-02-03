@@ -64,5 +64,6 @@ let timeStop = false; // time stoped bool
 let isMuted = false; // bool for muted sound
 
 let startTime; // stores time when games starts
-let localMultiPlayer = false // check if local multiplayer
+let localMultiPlayer = false; // check if local multiplayer
+let movesMade = 0; //Counter of moves
 

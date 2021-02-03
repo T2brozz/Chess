@@ -49,8 +49,10 @@ function showEndScreen(winner) {
     document.getElementById("whiteLeft").innerHTML = String(whiteLeft);
     document.getElementById("blackLeft").innerHTML = String(blackleft);
 
-    newSrc=canv.elt.toDataURL("image/png")
-    document.getElementById("endScreenCanvas").src=newSrc
+    document.getElementById("movesMade").innerHTML = String(movesMade);
+
+    newSrc = canv.elt.toDataURL("image/png")
+    document.getElementById("endScreenCanvas").src = newSrc
 }
 
 //end game when quit is pressed

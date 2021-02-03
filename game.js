@@ -29,6 +29,7 @@ function draw() {
         newGame = false;
         isPlaying = true;
         startTime = new Date().getTime();
+        movesMade = 0;
         canv.show()
         /*
         some html stuff
@@ -132,6 +133,7 @@ function whiteMove() {
             chessBoard[mouse.PanelY][mouse.PanelX] = type;
             selectedPanel.state = false;
             selectedPanel.after_select = 0;
+            movesMade++;
 
             currentPlayer = changeColor(currentPlayer);
             placeSound.play()
