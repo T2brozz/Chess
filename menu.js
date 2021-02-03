@@ -27,9 +27,15 @@ function calcSpeedTime() {
 
 //show the endscreen (who had guessed it ¯\_(ツ)_/¯    )
 function showEndScreen(winner) {
+
+    selectedPanel.state = false;
+    game()//call game ton update selected state
+    document.getElementById("endScreenCanvas").src = canv.elt.toDataURL("image/png") //make screenshot of chessboard and put it to img tag
+    canv.hide()//hide canvas
+
+
     let time = calcTime();
     document.getElementsByTagName("html")[0].style = 'background-image: url("background.png");' // show background
-
     HideDiv('endScreen', 'inGame')
     document.getElementById('endTitle').innerHTML = winner + " WON "
     document.getElementById("statsTime").innerHTML = time.h + ":" + time.m + ":" + time.s;
@@ -48,11 +54,9 @@ function showEndScreen(winner) {
     //displays left pieces
     document.getElementById("whiteLeft").innerHTML = String(whiteLeft);
     document.getElementById("blackLeft").innerHTML = String(blackleft);
-
     document.getElementById("movesMade").innerHTML = String(movesMade);
 
-    newSrc = canv.elt.toDataURL("image/png")
-    document.getElementById("endScreenCanvas").src = newSrc
+
 }
 
 //end game when quit is pressed

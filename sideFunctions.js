@@ -389,6 +389,7 @@ function getPossibleMoves(x, y, board, layer) {
             allowedMoves = allowedMoves.concat(Rook(), Bishop());
             break;
     }
+
     /*
     deletes all , which are out of the board
      */
@@ -422,9 +423,9 @@ function getPossibleMoves(x, y, board, layer) {
         }
 
         /*
-checks if move is going to set the  king in check
-*/
-        if(type === "k") {
+        checks if move is going to set the  king in check
+        */
+        if (type === "k") {
             for (let i = 0; i < allowedMoves.length; i++) {
                 let newpos = {x: allowedMoves[i].x, y: allowedMoves[i].y}
                 let boardToTest = setMove(allowedMoves[i].OldPos, newpos, board)
@@ -437,5 +438,13 @@ checks if move is going to set the  king in check
 
         }
     }
+    if (type === "k") {
+        if (!didRochade["w"]["did"]) {
+            if (!didRochade[color]["kingMoved"] && !didRochade[color]["rookMoved"]) {
+
+            }
+        }
+    }
+
     return allowedMoves;
 }

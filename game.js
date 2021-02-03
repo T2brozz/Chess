@@ -30,6 +30,18 @@ function draw() {
         isPlaying = true;
         startTime = new Date().getTime();
         movesMade = 0;
+        didRochade = {
+            b: {
+                did: false,
+                kingMoved: false,
+                rookMoved: false
+            },
+            w: {
+                did: false,
+                kingMoved: false,
+                rookMoved: false
+            }
+        };
         canv.show()
         /*
         some html stuff
@@ -69,17 +81,17 @@ function game() {
     /*
     some side functions
      */
+    gameEnd(); // check if game ends
     drawBackground();
     updateMouse();
     drawSides();
-    gameEnd(); // check if game ends
+
     if (currentPlayer === "w") { // white pisRecursion
         whiteMove();
     }
     if (!localMultiPlayer) {
 
         if (currentPlayer === "b") { // black pisRecursion
-            gameEnd(); // check if game ends
             ai("b");
             currentPlayer = changeColor("b"); // change black to white
             selectedPanel.after_select = 0;
@@ -134,7 +146,12 @@ function whiteMove() {
             selectedPanel.state = false;
             selectedPanel.after_select = 0;
             movesMade++;
-
+            console.log(type)
+            if(type[0]==="k"){
+                didRochade[currentPlayer]["kingMoved"]=true;
+            }else if(type[0]==="r"){
+                didRochade[currentPlayer]["rookMoved"]=true;
+            }
             currentPlayer = changeColor(currentPlayer);
             placeSound.play()
             // change same colored selected figure
@@ -167,6 +184,12 @@ function ai(thisTurnColor) {
         let ai_move = maxi(chessBoard, thisTurnColor, miniMaxDepth)[0];
         // setmovee
         console.log(ai_move)
+        let type=chessBoard[ai_move.y][ai_move.x][0]
+        if(type==="k"){
+            didRochade["b"]["kingMoved"]=true;
+        }else if(type==="r"){
+            didRochade["b"]["rookMoved"]=true;
+        }
         chessBoard = setMove(ai_move.OldPos, {x: ai_move.x, y: ai_move.y}, chessBoard)
         placeSound.play()
 
@@ -180,11 +203,9 @@ function ai(thisTurnColor) {
 function gameEnd(reason = "check") {
     if (wins.b && !wins.w) {
         isPlaying = false;
-        canv.hide();
         showEndScreen("Black");
     } else if (wins.w && !wins.b) {
         isPlaying = false;
-        canv.hide();
 
         showEndScreen("White");
     } else {
@@ -194,12 +215,10 @@ function gameEnd(reason = "check") {
     // check if time runs out
     if (reason === "time") {
         isPlaying = false;
-        canv.hide();
         showEndScreen("Black");
         //check if playxer is giving up
     } else if (reason === "giveUp") {
         isPlaying = false;
-        canv.hide();
         showEndScreen("Black");
     }
 
