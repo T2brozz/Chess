@@ -40,6 +40,7 @@ function calcSpeedTime() {
 * @param winner - String with the color who won
 */
 function showEndScreen(winner) {
+    selectedPanel.state=false
     game(true)//call game ton update selected state
     document.getElementById("endScreenCanvas").src = canv.elt.toDataURL("image/png") //make screenshot of chessboard and put it to img tag
     canv.hide()//hide canvas
