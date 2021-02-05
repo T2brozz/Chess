@@ -1,4 +1,8 @@
-//hid a defiend html element and show another
+/*
+*hide a defined html element and show another
+* @param divToShow - the element to show
+* @param divToHide - the element to hide
+*/
 function HideDiv(divToShow, divToHide = "mainMenu") {
     let mainMenu = document.getElementById(divToHide);
     let newDiv = document.getElementById(divToShow);
@@ -7,7 +11,10 @@ function HideDiv(divToShow, divToHide = "mainMenu") {
 
 }
 
-// clac time between start of the game and call of function
+/*
+*calculate time between start of the game and call of function
+* @return - object with time difference between start and end of the game
+*/
 function calcTime() {
     let timeNeeded = {unix: 0, h: 0, m: 0, s: 0};
     timeNeeded.unix = new Date(new Date().getTime() - startTime);
@@ -17,7 +24,10 @@ function calcTime() {
     return timeNeeded
 }
 
-//clac time every seconf for the speed chess timer
+/*
+*calculate time every second for the speed chess timer
+* @return - object with time left on the timer
+*/
 function calcSpeedTime() {
     let time = new Date((startTime + thinkTime * 60) - new Date().getTime());
     return {m: time.getMinutes() - (60 - thinkTime), s: time.getSeconds()}
@@ -25,11 +35,12 @@ function calcSpeedTime() {
 }
 
 
-//show the endscreen (who had guessed it ¯\_(ツ)_/¯    )
+/*
+*show the end screen
+* @param winner - String with the color who won
+*/
 function showEndScreen(winner) {
-
-    selectedPanel.state = false;
-    game()//call game ton update selected state
+    game(true)//call game ton update selected state
     document.getElementById("endScreenCanvas").src = canv.elt.toDataURL("image/png") //make screenshot of chessboard and put it to img tag
     canv.hide()//hide canvas
 
@@ -61,11 +72,13 @@ function showEndScreen(winner) {
 
 //end game when quit is pressed
 function quit() {
-
     gameEnd("giveUp");
 }
 
-// starts game at a given difficulty
+/*
+*starts game at a given difficulty
+*@param difficulty - depth for minimax
+*/
 function startGame(difficulty) {
     //parameter for normal game
     localMultiPlayer = false
@@ -79,7 +92,7 @@ function startGame(difficulty) {
 
 // starts local multiplayer
 function playLocal() {
-    //sets parameter for it
+    //set parameter
     thinkTime = 0;
     newGame = true;
     localMultiPlayer = true;
@@ -87,10 +100,12 @@ function playLocal() {
 
 }
 
-// starts speed game
+/*
+*starts speed game
+*@param time - time in minutes for the timer
+*/
 function startSpeedGame(time) {
-
-    //sets parameter
+    //set parameter
     localMultiPlayer = false
     thinkTime = time;
     isSpeedGame = true;

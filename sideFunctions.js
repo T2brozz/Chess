@@ -1,7 +1,7 @@
 /*
-Updates the mouse position, so that it is in the borders of the chessboard.
-The Panel coordinates are the mousePosition relative to  the Chessboard.
- */
+*Updates the mouse position, so that it is in the borders of the chessboard.
+*The Panel coordinates are the mousePosition relative to  the Chessboard.
+*/
 function updateMouse() {
     if (mouseX >= 800) {
         mouse.x = 799;
@@ -22,8 +22,11 @@ function updateMouse() {
 }
 
 /*
-is drawing the Figure at the defined position
- */
+*is drawing the Figure at the defined position
+*@param x{int} - x index in chessboard
+*@param y{int} - y index in chessboard
+*@param pieceId{string} - color and type
+*/
 function drawPiece(x, y, pieceId) {
     let dx, dy;
     switch (pieceId[0]) {
@@ -56,8 +59,8 @@ function drawPiece(x, y, pieceId) {
 }
 
 /*
-draws the black and white grid in the background
- */
+*draws the black and white grid in the background
+*/
 function drawBackground() {
     for (let i = 0; i < 8; i += 2) {
         for (let j = 0; j < 8; j++) {
@@ -78,8 +81,8 @@ function drawBackground() {
 }
 
 /*
-draws the letters and numbers on the side
- */
+*draws the letters and numbers on the side
+*/
 function drawSides() {
     fill("#a4a4a4");
     rect(800, 0, 25, 825);
@@ -93,8 +96,9 @@ function drawSides() {
 }
 
 /*
-switches Color shortcut (w->b; b->w)
- */
+*switches Color shortcut (w->b; b->w)
+* @param color{string} - color as one letter
+*/
 function changeColor(color) {
     if (color === "w") {
         return "b";
@@ -144,7 +148,37 @@ function setMove(oldPos, newPos, board) {
 }
 
 /*
-copies a given multidimensional array to avoid a call by reference
+*opens a menu for the player to promote the pawn
+*@param x{int} - xpos on chessboard
+*@param y{int} - ypos on chessboard
+*@param color{string} - color of player
+*/
+function pawnChangeMenu(x, y, color = "w") {
+
+    updateMouse();
+
+    fill(45, 76, 79, 50);
+    rect(0, 335, width, 125)
+    let pieces = ["q", "r", "b", "h"]
+
+    if (mouse.PanelX > 1 && mouse.PanelX < 6 && mouse.y > 335 && mouse.y < 450) {
+        fill("yellow");
+        rect(mouse.PanelX * 100, 335, 100, 125)
+        if (mouseIsPressed && mouseButton === LEFT) {
+            chessBoard[y][x] = pieces[mouse.PanelX - 2] + color
+        }
+
+    }
+    for (let i = 0; i < pieces.length; i++) {
+        drawPiece(2 + i, 3.5, pieces[i] + color)
+    }
+
+}
+
+/*
+*copies a given multidimensional array to avoid a call by reference
+*@param arr{array} multidimensional array to copy
+* @return {array} - copied array
  */
 function deepCopy(arr) { // need this to copy array without reference by:https://medium.com/@ziyoshams/deep-copying-javascript-arrays-4d5fc45a6e3e
     let copy = [];
@@ -159,9 +193,13 @@ function deepCopy(arr) { // need this to copy array without reference by:https:/
 }
 
 /*
-returns moves and boards which are for a given color possible
- */
-function getBoardsMoves(board, color, isRecursion = 0) {
+*returns moves and boards which are for a given color possible
+*@param board - 2 dimensional array
+*@param color - color as string
+*@param isRecursion - bool to prevent recursion loop
+*@return {array} - array with possible boards and moves
+*/
+function getBoardsMoves(board, color, isRecursion = false) {
 
     let allmoves = getAllMoves(board, color, isRecursion);
     let flatAllMoves = []
@@ -179,9 +217,14 @@ function getBoardsMoves(board, color, isRecursion = 0) {
     return [boards, flatAllMoves]
 }
 
+
 /*
-returns a 2 dimensional array of all moves from a given color in a given chess board
- */
+*returns a 2 dimensional array of all moves from a given color in a given chess board
+* @param board - 2 dimensional array
+* @param color - color as char
+* @param isRecursion - bool to prevent recursion
+* @return {array} - moves that are allowed
+*/
 function getAllMoves(board, color, isRecursion) {
     let allmoves = []
     //get all moves
@@ -196,9 +239,14 @@ function getAllMoves(board, color, isRecursion) {
 }
 
 /*
-returns an array with all possible moves for one figure
- */
-function getPossibleMoves(x, y, board, layer) {
+*returns an array with all possible moves for one figure
+*@param x - x pos of chessboard
+*@param y - y pos of chessboard
+*@param board - a chess board to work with
+*@param isRecursion - bool to prevent recursion
+*@return {array} - all possible moves
+*/
+function getPossibleMoves(x, y, board, isRecursion = false) {
     let posX = x;
     let posY = y;
     let type, color;
@@ -414,9 +462,9 @@ function getPossibleMoves(x, y, board, layer) {
     /*
     if check:
     removes all moves, that is not preventing a check
-    layer variable is for recursions
+    isRecursion variable is for recursions
      */
-    if (layer === 0) {
+    if (!isRecursion) {
         let movesToCheck = checkCheck(board, color);
         if (movesToCheck.length !== 0) {
             allowedMoves = preventCheck(board, color, movesToCheck, allowedMoves);
@@ -438,13 +486,5 @@ function getPossibleMoves(x, y, board, layer) {
 
         }
     }
-    if (type === "k") {
-        if (!didRochade["w"]["did"]) {
-            if (!didRochade[color]["kingMoved"] && !didRochade[color]["rookMoved"]) {
-
-            }
-        }
-    }
-
     return allowedMoves;
 }

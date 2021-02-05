@@ -66,15 +66,3 @@ let isMuted = false; // bool for muted sound
 let startTime; // stores time when games starts
 let localMultiPlayer = false; // check if local multiplayer
 let movesMade = 0; //Counter of moves
-let didRochade = {
-    b: {
-        did: false,
-        kingMoved: false,
-        rookMoved: false
-    },
-    w: {
-        did: false,
-        kingMoved: false,
-        rookMoved: false
-    }
-};//varable for rochade is done

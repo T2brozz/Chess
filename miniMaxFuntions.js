@@ -10,8 +10,10 @@
  */
 
 /*
-calculates a score for a given board
- */
+*calculates a score for a given board
+*@param board - 2 dimensional array
+*@return {int} - score from board
+*/
 function calcBoardValue(board) {
     let value = 0;
     for (let i = 0; i < board.length; i++) {
@@ -27,7 +29,13 @@ function calcBoardValue(board) {
     return value;
 }
 
-//black is maxi
+/*
+*Maxi function to get the move with highest score , in the code its the black player
+* @param board - 2 dimensional array
+* @param color - color as string
+* @param depth - how many iterations the algo should look in to
+* @return - best move
+*/
 function maxi(board, color, depth) {
     //evaluate board
     if (depth === 0) {
@@ -35,7 +43,7 @@ function maxi(board, color, depth) {
     }
     //get all boards
     let boards, moves;
-    [boards, moves] = getBoardsMoves(board, color, 0);
+    [boards, moves] = getBoardsMoves(board, color, false);
     let bestMoves = []
     let score = -1000000;
 
@@ -63,14 +71,19 @@ function maxi(board, color, depth) {
 
 }
 
-// mini is white
-// is the same as maxi only some values are inverted
+/*
+*Maxi function to get the move with lowest score , in the code its the white player
+* @param board - 2 dimensional array
+* @param color - color as string
+* @param depth - how many iterations the algo should look in to
+* @return - best move
+*/
 function mini(currentGameBoard, color, depth) {
     if (depth === 0) {
         return [null, -calcBoardValue(currentGameBoard)]
     }
     let boards, moves;
-    [boards, moves] = getBoardsMoves(currentGameBoard, color, 0);
+    [boards, moves] = getBoardsMoves(currentGameBoard, color, false);
 
     let bestMoves = [];
     //inverted

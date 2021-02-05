@@ -30,18 +30,6 @@ function draw() {
         isPlaying = true;
         startTime = new Date().getTime();
         movesMade = 0;
-        didRochade = {
-            b: {
-                did: false,
-                kingMoved: false,
-                rookMoved: false
-            },
-            w: {
-                did: false,
-                kingMoved: false,
-                rookMoved: false
-            }
-        };
         canv.show()
         /*
         some html stuff
@@ -53,59 +41,49 @@ function draw() {
         document.getElementsByTagName("html")[0].style.backgroundImage = "None"
         if (isSpeedGame) {
             document.getElementById("timeLeft").style.display = "block";
-
         } else {
             document.getElementById("timeLeft").style.display = "none";
-
         }
-
     }
     /*
     the actual game
      */
     if (isPlaying) {
-
         game();
     }
     if (isMuted) {
         document.getElementById("soundStatus").innerText = "Sound on";
         masterVolume(0);
     } else {
-
         document.getElementById("soundStatus").innerText = "Sound off";
         masterVolume(1);
     }
 }
 
-function game() {
+function game(isRecursion = false) {
     /*
     some side functions
      */
-    gameEnd(); // check if game ends
+    if (!isRecursion) {
+        gameEnd(); // check if game ends
+    }
     drawBackground();
     updateMouse();
     drawSides();
-
-    if (currentPlayer === "w") { // white pisRecursion
+    if (currentPlayer === "w") { // white
         whiteMove();
     }
     if (!localMultiPlayer) {
-
-        if (currentPlayer === "b") { // black pisRecursion
+        if (currentPlayer === "b") { // black
             ai("b");
             currentPlayer = changeColor("b"); // change black to white
             selectedPanel.after_select = 0;
-
-
         }
     } else {
         if (currentPlayer === "b") {
             whiteMove()
         }
-
-
     }
-
     selectedPanel.after_select++;
     for (let i = 0; i < chessBoard.length; i++) { // draw figures
         for (let j = 0; j < chessBoard[i].length; j++) {
@@ -113,15 +91,22 @@ function game() {
                 drawPiece(j, i, chessBoard[i][j]);
             }
         }
-
     }
 
     if (isSpeedGame && (new Date().getTime() - startTime) > 60) { // if speedgame call timer
         speedGame();
     }
-
+    //pawn promotion
+    let whiteIndex = chessBoard[0].indexOf("pw")
+    if (whiteIndex !== -1) {
+        selectedPanel.state = false
+        selectedPanel.piece_index.x = whiteIndex;
+        selectedPanel.piece_index.y = 0
+        pawnChangeMenu(whiteIndex, 0, "w")
+    }
 }
 
+//let the white player make a move
 function whiteMove() {
     //check if is clicking on a same colored figure
     if (chessBoard[mouse.PanelY][mouse.PanelX] !== 0 && mouseIsPressed && selectedPanel.state === false && mouseButton === LEFT && selectedPanel.after_select > 30) {
@@ -132,7 +117,6 @@ function whiteMove() {
             selectedPanel.piece_index.y = mouse.PanelY;
             allowableMoves = getPossibleMoves(selectedPanel.piece_index.x, selectedPanel.piece_index.y, chessBoard, 0);
             selectedPanel.after_select = 0;
-
         }
         //check if clicking on a free spot or other colored firgue to move
     } else if (mouseIsPressed && mouseButton === LEFT && selectedPanel.state && selectedPanel.after_select > 30) {
@@ -146,12 +130,6 @@ function whiteMove() {
             selectedPanel.state = false;
             selectedPanel.after_select = 0;
             movesMade++;
-            console.log(type)
-            if(type[0]==="k"){
-                didRochade[currentPlayer]["kingMoved"]=true;
-            }else if(type[0]==="r"){
-                didRochade[currentPlayer]["rookMoved"]=true;
-            }
             currentPlayer = changeColor(currentPlayer);
             placeSound.play()
             // change same colored selected figure
@@ -176,20 +154,21 @@ function whiteMove() {
 
 }
 
-// aiMoves
+/*
+*function to let the ai make a move
+* @param color - string for color, mostly "b"
+*/
 function ai(thisTurnColor) {
     timeStop = true;
     setTimeout(() => {
         //get move
-        let ai_move = maxi(chessBoard, thisTurnColor, miniMaxDepth)[0];
-        // setmovee
-        console.log(ai_move)
-        let type=chessBoard[ai_move.y][ai_move.x][0]
-        if(type==="k"){
-            didRochade["b"]["kingMoved"]=true;
-        }else if(type==="r"){
-            didRochade["b"]["rookMoved"]=true;
+        let ai_move;
+        if (miniMaxDepth === 1) {
+            ai_move = maxi(chessBoard, thisTurnColor, Math.floor((Math.random() * 2) + 1))[0];
+        } else {
+            ai_move = maxi(chessBoard, thisTurnColor, miniMaxDepth)[0];
         }
+        // setmove
         chessBoard = setMove(ai_move.OldPos, {x: ai_move.x, y: ai_move.y}, chessBoard)
         placeSound.play()
 
@@ -199,7 +178,10 @@ function ai(thisTurnColor) {
 
 }
 
-// check if game ends
+/*
+*check if game ends
+*@param reason - string to identify reason for end screen
+*/
 function gameEnd(reason = "check") {
     if (wins.b && !wins.w) {
         isPlaying = false;
@@ -212,16 +194,11 @@ function gameEnd(reason = "check") {
         // check if players are in chckmate
         wins = {w: !checkCheckMate(chessBoard, "w"), b: !checkCheckMate(chessBoard, "b")};
     }
-    // check if time runs out
-    if (reason === "time") {
-        isPlaying = false;
-        showEndScreen("Black");
-        //check if playxer is giving up
-    } else if (reason === "giveUp") {
+    // check if time runs out or player gave up
+    if (reason === "time" || reason === "giveUp") {
         isPlaying = false;
         showEndScreen("Black");
     }
-
 }
 
 // show timer when in Speedgame mode
@@ -239,8 +216,11 @@ function speedGame() {
 
 
 /*
-check if king of a given color is in Check
- */
+*check if king of a given color is in Check
+* @param board - 2 dimensional array
+* @param color - string color
+* @return - array from enemy moves that lead to check
+*/
 function checkCheck(board, color) {
     let kingPos = {x: 0, y: 0}
 
@@ -252,7 +232,7 @@ function checkCheck(board, color) {
     }
     //get enemy moves
 
-    let enemyMoves = getAllMoves(board, changeColor(color), 1)
+    let enemyMoves = getAllMoves(board, changeColor(color), true)
     let flatEnemyMoves = [];
     //make it to a 1 dimensional array
     for (let i = 0; i < enemyMoves.length; i++) {
@@ -272,8 +252,11 @@ function checkCheck(board, color) {
 }
 
 /*
-return if king from a given color is checkMate
- */
+*check if king from a given color is checkMate
+* @param board - 2 dimensional array
+* @param color - string as color
+* @return Boolean - if king is checkmate
+*/
 function checkCheckMate(board, color) {
     let moves = getAllMoves(board, color, 0);
     let flatMoves = [];
@@ -286,8 +269,12 @@ function checkCheckMate(board, color) {
 }
 
 /*
-returns moves to prevent check
- */
+*returns moves to prevent check
+* @param board - 2 dimensional array
+* @param color - string for color
+* @param moves - array of moves that the player has
+* @return - array of moves that prevent check
+*/
 function preventCheck(board, color, enemyMoves, moves) {
     let boards = [];
     let preventCheckMoves = [];
@@ -301,3 +288,5 @@ function preventCheck(board, color, enemyMoves, moves) {
     }
     return preventCheckMoves;
 }
+
+
