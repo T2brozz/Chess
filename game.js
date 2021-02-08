@@ -66,6 +66,9 @@ function game(isRecursion = false) {
      */
     if (!isRecursion) {
         gameEnd(); // check if game ends
+        if (isSpeedGame && (new Date().getTime() - startTime) > 60) { // if speedgame call timer
+            speedGame();
+        }
     }
     drawBackground();
     updateMouse();
@@ -93,9 +96,7 @@ function game(isRecursion = false) {
         }
     }
 
-    if (isSpeedGame && (new Date().getTime() - startTime) > 60) { // if speedgame call timer
-        speedGame();
-    }
+
     //pawn promotion
     let whiteIndex = chessBoard[0].indexOf("pw")
     if (whiteIndex !== -1) {
